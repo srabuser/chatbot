@@ -1,0 +1,322 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="description" content="Chatbot Website">
+    <title>Smart Chatbot</title>
+    <style>
+        /* Default Light Mode */
+        body {
+            font-family: Arial, sans-serif;
+            margin: 0;
+            padding: 0;
+            background-color: #f4f4f9;
+            color: #333;
+            transition: all 0.3s ease;
+        }
+
+        header {
+            background-color: #0078d7;
+            color: white;
+            text-align: center;
+            padding: 1.5rem 0;
+            transition: all 0.3s ease;
+        }
+
+        header h1 {
+            margin: 0;
+            font-size: 2.5rem;
+        }
+
+        nav {
+            text-align: center;
+            margin: 1rem 0;
+        }
+
+        nav a {
+            margin: 0 10px;
+            text-decoration: none;
+            color: #0078d7;
+            font-weight: bold;
+        }
+
+        nav a:hover {
+            color: #0056a1;
+        }
+
+        .chat-container {
+            width: 90%;
+            max-width: 600px;
+            margin: 20px auto;
+            background: white;
+            box-shadow: 0px 4px 8px rgba(0, 0, 0, 0.2);
+            border-radius: 8px;
+            padding: 20px;
+            transition: all 0.3s ease;
+        }
+
+        .chatbox {
+            height: 300px;
+            overflow-y: scroll;
+            border: 1px solid #ddd;
+            border-radius: 5px;
+            padding: 10px;
+            background: #fafafa;
+            margin-bottom: 10px;
+        }
+
+        .chatbox p {
+            margin: 5px 0;
+            padding: 8px 12px;
+            border-radius: 15px;
+        }
+
+        .chatbox .user {
+            background: #0078d7;
+            color: white;
+            align-self: flex-end;
+            margin-left: auto;
+        }
+
+        .chatbox .bot {
+            background: #e0e0e0;
+            color: #333;
+        }
+
+        .input-container {
+            display: flex;
+        }
+
+        .input-container input {
+            flex: 1;
+            padding: 10px;
+            border: 1px solid #ddd;
+            border-radius: 5px 0 0 5px;
+        }
+
+        .input-container button {
+            padding: 10px 20px;
+            background: #0078d7;
+            color: white;
+            border: none;
+            cursor: pointer;
+            border-radius: 0 5px 5px 0;
+        }
+
+        .input-container button:hover {
+            background: #0056a1;
+        }
+
+        footer {
+            text-align: center;
+            padding: 20px 0;
+            background: #f4f4f9;
+            color: #888;
+        }
+
+        .about-section {
+            text-align: center;
+            margin: 40px 20px;
+        }
+
+        .about-section h2 {
+            font-size: 2rem;
+        }
+
+        .about-section p {
+            font-size: 1.1rem;
+            line-height: 1.6;
+            max-width: 700px;
+            margin: 0 auto;
+        }
+
+        /* Dark Mode */
+        body.dark-mode {
+            background-color: #181818;
+            color: #f4f4f4;
+        }
+
+        header.dark-mode {
+            background-color: #222;
+        }
+
+        .chat-container.dark-mode {
+            background: #333;
+            color: #f4f4f4;
+        }
+
+        .chatbox.dark-mode {
+            background: #2c2c2c;
+            border-color: #444;
+        }
+
+        .chatbox .user.dark-mode {
+            background: #444;
+            color: #fff;
+        }
+
+        .chatbox .bot.dark-mode {
+            background: #666;
+            color: #fff;
+        }
+
+        .input-container input.dark-mode {
+            background: #444;
+            color: #fff;
+            border: 1px solid #666;
+        }
+
+        .input-container button.dark-mode {
+            background: #444;
+            border: none;
+        }
+
+        footer.dark-mode {
+            background: #333;
+            color: #ccc;
+        }
+
+        /* Arabic Language */
+        body.arabic {
+            direction: rtl;
+        }
+
+        nav.arabic a {
+            margin: 0 15px;
+            text-decoration: none;
+            color: #0078d7;
+            font-weight: bold;
+        }
+
+        footer.arabic {
+            text-align: right;
+        }
+    </style>
+</head>
+<body>
+
+<header>
+    <h1 id="headerTitle">Welcome to Smart Chatbot</h1>
+</header>
+
+<nav>
+    <a href="#chat" id="chatLink">Chat</a>
+    <a href="#about" id="aboutLink">About</a>
+    <button onclick="toggleDarkMode()">🌙 / 🌞</button>
+    <button onclick="toggleLanguage()">Change Language</button>
+</nav>
+
+<section id="chat">
+    <div class="chat-container">
+        <div class="chatbox" id="chatbox">
+            <p class="bot">Hello! How can I assist you today?</p>
+        </div>
+        <div class="input-container">
+            <input type="text" id="userInput" placeholder="Type your message here...">
+            <button onclick="sendMessage()">Send</button>
+        </div>
+    </div>
+</section>
+
+<section id="about" class="about-section">
+    <h2 id="aboutTitle">About Our Chatbot</h2>
+    <p id="aboutText">
+        Our chatbot is designed to provide fast and accurate responses to your inquiries. Built with advanced AI technology,
+        it helps you navigate through various tasks efficiently and ensures an engaging conversation experience.
+    </p>
+</section>
+
+<footer>
+    <p id="footerText">&copy; 2024 Smart Chatbot. All rights reserved.</p>
+</footer>
+
+<script>
+    let darkMode = false;
+    let arabic = false;
+
+    // Toggle Dark Mode
+    function toggleDarkMode() {
+        darkMode = !darkMode;
+        document.body.classList.toggle("dark-mode", darkMode);
+        document.querySelector("header").classList.toggle("dark-mode", darkMode);
+        document.querySelector(".chat-container").classList.toggle("dark-mode", darkMode);
+        document.querySelector(".chatbox").classList.toggle("dark-mode", darkMode);
+        document.querySelector(".input-container input").classList.toggle("dark-mode", darkMode);
+        document.querySelector(".input-container button").classList.toggle("dark-mode", darkMode);
+        document.querySelector("footer").classList.toggle("dark-mode", darkMode);
+    }
+
+    // Toggle Language (English/Arabic)
+    function toggleLanguage() {
+        arabic = !arabic;
+        document.body.classList.toggle("arabic", arabic);
+
+        const headerTitle = document.getElementById("headerTitle");
+        const chatLink = document.getElementById("chatLink");
+        const aboutLink = document.getElementById("aboutLink");
+        const aboutTitle = document.getElementById("aboutTitle");
+        const aboutText = document.getElementById("aboutText");
+        const footerText = document.getElementById("footerText");
+
+        if (arabic) {
+            headerTitle.textContent = "مرحبًا بك في الشات بوت الذكي";
+            chatLink.textContent = "الدردشة";
+            aboutLink.textContent = "حول";
+            aboutTitle.textContent = "حول الشات بوت";
+            aboutText.textContent = "تم تصميم الشات بوت الخاص بنا لتقديم استجابات سريعة ودقيقة لاستفساراتك. تم بناؤه باستخدام تكنولوجيا الذكاء الاصطناعي المتقدمة، ويساعدك على التنقل عبر المهام بكفاءة ويضمن تجربة محادثة ممتعة.";
+            footerText.textContent = "&copy; 2024 الشات بوت الذكي. جميع الحقوق محفوظة.";
+        } else {
+            headerTitle.textContent = "Welcome to Smart Chatbot";
+            chatLink.textContent = "Chat";
+            aboutLink.textContent = "About";
+            aboutTitle.textContent = "About Our Chatbot";
+            aboutText.textContent = "Our chatbot is designed to provide fast and accurate responses to your inquiries. Built with advanced AI technology, it helps you navigate through various tasks efficiently and ensures an engaging conversation experience.";
+            footerText.textContent = "&copy; 2024 Smart Chatbot. All rights reserved.";
+        }
+    }
+
+    
+    // Send message functionality
+    function sendMessage() {
+        const inputField = document.getElementById("userInput");
+        const chatbox = document.getElementById("chatbox");
+
+        const userMessage = inputField.value.trim();
+        if (userMessage !== "") {
+            // Display user message
+            const userParagraph = document.createElement("p");
+            userParagraph.className = "user";
+            userParagraph.textContent = userMessage;
+            chatbox.appendChild(userParagraph);
+
+            // Auto-scroll chatbox
+            chatbox.scrollTop = chatbox.scrollHeight;
+
+            // Mock bot response
+            const botParagraph = document.createElement("p");
+            botParagraph.className = "bot";
+            botParagraph.textContent = "Thank you for your message! I'll get back to you shortly.";
+            chatbox.appendChild(botParagraph);
+
+            inputField.value = "";
+            chatbox.scrollTop = chatbox.scrollHeight;
+        }
+    }
+</script>
+
+<script type="text/javascript">
+    (function(d, t) {
+        var v = d.createElement(t), s = d.getElementsByTagName(t)[0];
+        v.onload = function() {
+          window.voiceflow.chat.load({
+            verify: { projectID: '675201f2f715005e7d9afe2c' },
+            url: 'https://general-runtime.voiceflow.com',
+            versionID: 'production'
+          });
+        }
+        v.src = "https://cdn.voiceflow.com/widget/bundle.mjs"; v.type = "text/javascript"; s.parentNode.insertBefore(v, s);
+    })(document, 'script');
+  </script>
+</body>
+</html>
